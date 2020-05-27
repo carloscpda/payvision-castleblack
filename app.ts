@@ -1,13 +1,13 @@
-const http = require("http");
-const express = require("express");
-const bodyParser = require("body-parser");
-const consola = require("consola");
-const router = require("./src/router.js");
-const api = require("./src/api.js");
+import http from "http";
+import express from "express";
+import bodyParser from "body-parser";
+import consola from "consola";
+import router from "./src/router";
+import api from "./src/api";
 
 const app = express();
 const host = process.env.HOST || "0.0.0.0";
-const port = process.env.PORT || 8080;
+const port = +(process.env.PORT || 8080);
 app.set("port", port);
 
 async function run() {
@@ -23,7 +23,7 @@ async function run() {
   server.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
-    badge: true
+    badge: true,
   });
 }
 
