@@ -8,7 +8,7 @@ async function run() {
   const PATH = "./cache/data.json";
   if (!fs.existsSync(PATH)) {
     try {
-      db.seed();
+      await db.seed();
       console.log("Data loaded successfully.");
     } catch (err) {
       console.log(err);

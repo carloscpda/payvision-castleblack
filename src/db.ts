@@ -4,18 +4,24 @@ import { players, objects } from "./data";
 
 const PATH = "./cache/data.json";
 
-async function fetch(
-  key: string
-): Promise<{ ok: boolean; data: any; error: string }> {
+async function fetchAll(): Promise<{ ok: boolean; data: any; error: string }> {
   const readFile = util.promisify(fs.readFile);
 
   try {
     const raw = await readFile(PATH);
-    const data = JSON.parse(raw.toString())[key];
+    const data = JSON.parse(raw.toString());
     return { ok: true, data, error: "" };
   } catch (err) {
     return { ok: false, data: null, error: err };
   }
+}
+
+async function fetch(
+  key: string
+): Promise<{ ok: boolean; data: any; error: string }> {
+  const { ok, data, error } = await fetchAll();
+  if (ok) return { ok, data: data[key], error };
+  else return { ok, data, error };
 }
 
 async function update(
@@ -24,7 +30,7 @@ async function update(
 ): Promise<{ ok: boolean; error: string }> {
   const writeFile = util.promisify(fs.writeFile);
 
-  let { ok, data, error } = await fetch(key);
+  let { ok, data, error } = await fetchAll();
   if (!ok) return { ok, error };
   const newData = { ...data, [key]: updatedData };
   const rawToSave = JSON.stringify(newData);
@@ -37,13 +43,13 @@ async function update(
   }
 }
 
-function seed(): { ok: boolean; error: string } {
+async function seed(): Promise<{ ok: boolean; error: string }> {
   const writeFile = util.promisify(fs.writeFile);
 
   var data = JSON.stringify({ players, objects });
 
   try {
-    writeFile(PATH, data);
+    await writeFile(PATH, data);
     return { ok: true, error: "" };
   } catch (err) {
     return { ok: false, error: err };
