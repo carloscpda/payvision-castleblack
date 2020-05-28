@@ -1,6 +1,6 @@
 import { Router } from "express";
-import playersApi from "./players";
-import objectsApi from "./objects";
+import playersApi from "./playersApi";
+import objectsApi from "./objectsApi";
 
 const api = Router();
 

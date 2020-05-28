@@ -1,7 +1,7 @@
 import db from "../db";
 import { IObject } from "../@types/object";
 
-class ObjectService {
+class ObjectRepo {
   static getAllObjects = async (): Promise<{
     ok: boolean;
     data: IObject[];
@@ -55,4 +55,4 @@ class ObjectService {
   };
 }
 
-export default ObjectService;
+export default ObjectRepo;

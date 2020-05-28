@@ -66,7 +66,7 @@ describe("Castleblack API players", () => {
   it("should update player weapon", (done) => {
     const body = { weapon: 1 };
     request(server)
-      .patch("/api/players/1")
+      .post("/api/players/1/arm")
       .send(body)
       .set("Accept", "application/json")
       .expect("Location", /players\/[0-9]+/)
@@ -76,18 +76,17 @@ describe("Castleblack API players", () => {
   it("should fail at update wrong player weapon", (done) => {
     const body = { weapon: 2 };
     request(server)
-      .patch("/api/players/1")
+      .post("/api/players/1/arm")
       .send(body)
       .set("Accept", "application/json")
       .expect(404, done);
   });
 
-  it("should fail at update wrong player health", (done) => {
-    const body = { health: -10 };
+  it("should kill a player (sets player health to 0)", (done) => {
     request(server)
-      .patch("/api/players/1")
-      .send(body)
+      .post("/api/players/1/kill")
       .set("Accept", "application/json")
-      .expect(400, done);
+      .expect("Location", /players\/[0-9]+/)
+      .expect(200, done);
   });
 });

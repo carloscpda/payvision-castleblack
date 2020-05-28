@@ -63,20 +63,20 @@ describe("Castleblack API objects", () => {
       .expect(404, done);
   });
 
-  it("should update object value", (done) => {
+  it("should upgrade object value", (done) => {
     const body = { value: -5 };
     request(server)
-      .patch("/api/objects/1")
+      .post("/api/objects/1/upgrade")
       .send(body)
       .set("Accept", "application/json")
       .expect("Location", /objects\/[0-9]+/)
       .expect(200, done);
   });
 
-  it("should fail at update object value with bad format", (done) => {
+  it("should fail at upgrade object value with bad format", (done) => {
     const body = { value: "two" };
     request(server)
-      .patch("/api/objects/1")
+      .post("/api/objects/1/upgrade")
       .send(body)
       .set("Accept", "application/json")
       .expect(400, done);

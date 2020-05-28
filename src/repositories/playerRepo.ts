@@ -1,7 +1,7 @@
 import db from "../db";
 import { IPlayer } from "../@types/player";
 
-class PlayerService {
+class PlayerRepo {
   static getAllPlayers = async (): Promise<{
     ok: boolean;
     data: IPlayer[];
@@ -45,4 +45,4 @@ class PlayerService {
   };
 }
 
-export default PlayerService;
+export default PlayerRepo;
