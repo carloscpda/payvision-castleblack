@@ -1,10 +1,10 @@
-import { IItem } from "./item";
+import { IObject } from "./object";
 
 export interface IPlayer {
   id: number;
   name: string;
   age: number;
   health: number;
-  bag: IItem["id"][];
-  weapon?: IItem["id"];
+  bag: IObject["id"][];
+  weapon?: IObject["id"];
 }
