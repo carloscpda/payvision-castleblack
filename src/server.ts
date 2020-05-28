@@ -1,8 +1,8 @@
 import http from "http";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import router from "./router";
-import api from "./api";
+import api from "./api/api";
 
 const app = express();
 
@@ -12,6 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", router);
 app.use("/api", api);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send(err);
+});
 
 const server = http.createServer(app);
 

@@ -4,8 +4,8 @@
   "description": "Code challenge for frontend vacancy at Payvision. REST API exercise.",
   "main": "app.ts",
   "scripts": {
-    "start": "nodemon app.ts",
-    "test": "test",
+    "start": "nodemon app.ts --ignore 'cache/data.json'",
+    "test": "jest",
     "test:watch": "jest --watch",
     "commit": "git-cz",
     "release": "standard-version -a",
@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "consola": "^2.10.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-validator": "^6.5.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.6",
