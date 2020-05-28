@@ -1,6 +1,5 @@
 import db from "../db";
 import { IPlayer } from "../@types/player";
-import { players } from "../data";
 
 class PlayerService {
   static getAllPlayers = async (): Promise<{
@@ -32,8 +31,8 @@ class PlayerService {
     const { ok, data, error } = await db.fetch("players");
     if (!ok) return { ok, error };
     const index = (data as IPlayer[]).findIndex((pl) => pl.id === player.id);
-    players[index] = player;
-    return db.update("players", players);
+    data[index] = player;
+    return db.update("players", data);
   };
 
   static addPlayer = async (

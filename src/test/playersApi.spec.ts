@@ -1,13 +1,8 @@
 import request from "supertest";
 import server from "../server";
 import { players } from "../data";
-import db from "../db";
 
 describe("Castleblack API players", () => {
-  beforeEach(() => {
-    return db.seed();
-  });
-
   it("should retrieve all players", (done) => {
     request(server)
       .get("/api/players")
