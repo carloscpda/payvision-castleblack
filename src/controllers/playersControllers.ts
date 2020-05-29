@@ -1,27 +1,25 @@
 import { Response, Request, NextFunction } from "express";
 import { IPlayer } from "../@types/player";
 import PlayerError from "../errors/playerErrors";
-import PlayerRepo from "../repositories/playerRepo";
+import { IPlayerRepo } from "../repositories/playerRepo";
 
 class PlayerControllers {
+  playerRepo: IPlayerRepo;
+
+  constructor(playerRepo: IPlayerRepo) {
+    this.playerRepo = playerRepo;
+  }
+
   // Get all players
-  static async getPlayersContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { ok, data, error } = await PlayerRepo.getAllPlayers();
+  async getPlayersContoller(req: Request, res: Response, next: NextFunction) {
+    const { ok, data, error } = await this.playerRepo.getAllPlayers();
     if (!ok) return next(error);
     res.json(data);
   }
 
   // Create a new player
-  static async createPlayerContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { ok, data, error } = await PlayerRepo.getAllPlayers();
+  async createPlayerContoller(req: Request, res: Response, next: NextFunction) {
+    const { ok, data, error } = await this.playerRepo.getAllPlayers();
     if (!ok) return next(error);
 
     const { name, age } = req.body;
@@ -34,41 +32,35 @@ class PlayerControllers {
       bag: [],
     };
 
-    const { ok: addOk, error: addErr } = await PlayerRepo.addPlayer(player);
+    const { ok: addOk, error: addErr } = await this.playerRepo.addPlayer(
+      player
+    );
 
     if (!addOk) return next(addErr);
     res.location(`/players/${player.id}`).sendStatus(201);
   }
 
   // Get a player by id
-  static async getPlayerContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  async getPlayerContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const { ok, player, error } = await PlayerRepo.getPlayerById(
+    const { ok, player, error } = await this.playerRepo.getPlayerById(
       parseInt(id, 10)
     );
 
     if (!ok) return next(error);
-    if (player) res.json(player);
-    else
-      res.status(404).json({
+    if (!player)
+      return res.status(404).json({
         errors: [PlayerError.playerNotFoundError("id", id)],
       });
+    res.json(player);
   }
 
   // Arm a player with a weapon
-  static async armPlayerContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  async armPlayerContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     const { weapon } = req.body;
 
-    const { ok, player, error } = await PlayerRepo.getPlayerById(
+    const { ok, player, error } = await this.playerRepo.getPlayerById(
       parseInt(id, 10)
     );
 
@@ -89,22 +81,19 @@ class PlayerControllers {
     player.weapon = weapon;
     player.bag.splice(objectIndex, 1);
 
-    const { ok: updateOk, error: updateError } = await PlayerRepo.updatePlayer(
-      player
-    );
+    const {
+      ok: updateOk,
+      error: updateError,
+    } = await this.playerRepo.updatePlayer(player);
     if (!updateOk) return next(updateError);
-    else res.location(`/players/${id}`).sendStatus(200);
+    res.location(`/players/${id}`).sendStatus(200);
   }
 
   // Kill a player
-  static async killPlayerContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  async killPlayerContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
 
-    const { ok, player, error } = await PlayerRepo.getPlayerById(
+    const { ok, player, error } = await this.playerRepo.getPlayerById(
       parseInt(id, 10)
     );
 
@@ -117,11 +106,12 @@ class PlayerControllers {
 
     player.health = 0;
 
-    const { ok: updateOk, error: updateError } = await PlayerRepo.updatePlayer(
-      player
-    );
+    const {
+      ok: updateOk,
+      error: updateError,
+    } = await this.playerRepo.updatePlayer(player);
     if (!updateOk) return next(updateError);
-    else res.location(`/players/${id}`).sendStatus(200);
+    res.location(`/players/${id}`).sendStatus(200);
   }
 }
 

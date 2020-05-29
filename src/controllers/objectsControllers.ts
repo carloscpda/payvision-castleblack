@@ -1,25 +1,23 @@
 import { Request, Response, NextFunction } from "express";
-import ObjectRepo from "../repositories/objectRepo";
+import { IObjectRepo } from "../repositories/objectRepo";
 import ObjectError from "../errors/objectErrors";
 import { IObject } from "../@types/object";
 
 class ObjectControllers {
-  static async getObjectsContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { ok, data, error } = await ObjectRepo.getAllObjects();
-    if (ok) res.json(data);
-    else next(error);
+  objectRepo: IObjectRepo;
+
+  constructor(objectRepo: IObjectRepo) {
+    this.objectRepo = objectRepo;
   }
 
-  static async createObjectContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    const { ok, data, error } = await await ObjectRepo.getAllObjects();
+  async getObjectsContoller(req: Request, res: Response, next: NextFunction) {
+    const { ok, data, error } = await this.objectRepo.getAllObjects();
+    if (!ok) return next(error);
+    res.json(data);
+  }
+
+  async createObjectContoller(req: Request, res: Response, next: NextFunction) {
+    const { ok, data, error } = await await this.objectRepo.getAllObjects();
     if (!ok) return next(error);
 
     const { name, value } = req.body;
@@ -29,19 +27,17 @@ class ObjectControllers {
       value: parseInt(value, 10),
     };
 
-    const { ok: addOk, error: addErr } = await ObjectRepo.addObject(obj);
+    const { ok: addOk, error: addErr } = await this.objectRepo.addObject(obj);
 
-    if (addOk) res.location(`/objects/${obj.id}`).sendStatus(201);
-    else next(addErr);
+    if (!addOk) return next(addErr);
+    res.location(`/objects/${obj.id}`).sendStatus(201);
   }
 
-  static async getObjectContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  async getObjectContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const { ok, obj, error } = await ObjectRepo.getObjetById(parseInt(id, 10));
+    const { ok, obj, error } = await this.objectRepo.getObjetById(
+      parseInt(id, 10)
+    );
 
     if (!ok) return next(error);
     if (obj) res.json(obj);
@@ -51,7 +47,7 @@ class ObjectControllers {
       });
   }
 
-  static async upgradeObjectContoller(
+  async upgradeObjectContoller(
     req: Request,
     res: Response,
     next: NextFunction
@@ -59,7 +55,9 @@ class ObjectControllers {
     const { id } = req.params;
     const { value } = req.body;
 
-    const { ok, obj, error } = await ObjectRepo.getObjetById(parseInt(id, 10));
+    const { ok, obj, error } = await this.objectRepo.getObjetById(
+      parseInt(id, 10)
+    );
 
     if (!ok) return next(error);
 
@@ -70,21 +68,20 @@ class ObjectControllers {
 
     obj.value = parseInt(value, 10);
 
-    const { ok: updateOk, error: updateError } = await ObjectRepo.updateObject(
-      obj
-    );
+    const {
+      ok: updateOk,
+      error: updateError,
+    } = await this.objectRepo.updateObject(obj);
     if (!updateOk) return next(updateError);
-    else res.location(`/objects/${id}`).sendStatus(200);
+    res.location(`/objects/${id}`).sendStatus(200);
   }
 
-  static async deleteObjectContoller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  async deleteObjectContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
 
-    const { ok, obj, error } = await ObjectRepo.getObjetById(parseInt(id, 10));
+    const { ok, obj, error } = await this.objectRepo.getObjetById(
+      parseInt(id, 10)
+    );
 
     if (!ok) return next(error);
 
@@ -93,11 +90,12 @@ class ObjectControllers {
         errors: [ObjectError.objectNotFoundError("id", id)],
       });
 
-    const { ok: removeOk, error: removeError } = await ObjectRepo.removeObject(
-      obj.id
-    );
+    const {
+      ok: removeOk,
+      error: removeError,
+    } = await this.objectRepo.removeObject(obj.id);
     if (!removeOk) return next(removeError);
-    else res.sendStatus(204);
+    res.sendStatus(204);
   }
 }
 
