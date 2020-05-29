@@ -12,7 +12,16 @@ const isTest = process.env.NODE_ENV === "test";
 
 const app = express();
 
-app.disable("x-powered-by"); // QUESTION: any reason is this line here?
+app.disable("x-powered-by");
+/**
+ * QUESTION
+ * any reason is this line here?
+ *
+ * ANSWER
+ * x-powered-by is a header sent it on every request that notes that is an Express server (in this case)
+ * This could be a security problem because expose the framework and technology used on the server
+ */
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

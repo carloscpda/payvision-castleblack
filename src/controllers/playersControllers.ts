@@ -65,35 +65,36 @@ class PlayerControllers {
     const { id } = req.params;
     const { weapon } = req.body;
 
+    // Get and validate player
     const { ok, player, error } = await this.playerRepo.getPlayerById(
       parseInt(id, 10)
     );
-
     if (!ok) return next(error);
-
     if (!player)
       return res.status(404).json({
         errors: [PlayerError.playerNotFoundError("id", id)],
       });
 
+    // Validate weapon
     const objectIndex = player.bag.findIndex(
       (ob) => ob === parseInt(weapon, 10)
     );
-
     if (objectIndex === -1)
       return res.status(404).json({
         errors: [PlayerError.playerObjectNotFoundError(player.name, weapon)],
       });
 
+    // Update player
     if (player.weapon) player.bag.push(player.weapon);
     player.weapon = weapon;
     player.bag.splice(objectIndex, 1);
-
     const {
       ok: updateOk,
       error: updateError,
     } = await this.playerRepo.updatePlayer(player);
     if (!updateOk) return next(updateError);
+
+    // Ok response
     res.location(`/players/${id}`).sendStatus(200);
   }
 
@@ -101,24 +102,25 @@ class PlayerControllers {
   async killPlayerContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
 
+    // Get and validate player
     const { ok, player, error } = await this.playerRepo.getPlayerById(
       parseInt(id, 10)
     );
-
     if (!ok) return next(error);
-
     if (!player)
       return res.status(404).json({
         errors: [PlayerError.playerNotFoundError("id", id)],
       });
 
+    // Update player
     player.health = 0;
-
     const {
       ok: updateOk,
       error: updateError,
     } = await this.playerRepo.updatePlayer(player);
     if (!updateOk) return next(updateError);
+
+    // Ok response
     res.location(`/players/${id}`).sendStatus(200);
   }
 
