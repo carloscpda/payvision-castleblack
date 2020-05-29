@@ -2,6 +2,7 @@ import request from "supertest";
 import server from "../server";
 import { objects } from "../data";
 import db from "../db";
+import supertest from "supertest";
 
 describe("Castleblack API objects", () => {
   beforeEach(() => {
