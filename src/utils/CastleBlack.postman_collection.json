@@ -27,6 +27,34 @@
 					"response": []
 				},
 				{
+					"name": "Create player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sansa\",\n    \"age\": 21\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players"
+							]
+						},
+						"description": "Create a new player"
+					},
+					"response": []
+				},
+				{
 					"name": "Get player",
 					"request": {
 						"method": "GET",
@@ -66,71 +94,234 @@
 					"response": []
 				},
 				{
-					"name": "Create player",
+					"name": "Arm player",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "Sansa",
-									"type": "text"
-								},
-								{
-									"key": "age",
-									"value": "21",
-									"description": "between 0 and 100",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"weapon\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/players",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"players"
-							]
-						},
-						"description": "Create a new player"
-					},
-					"response": []
-				},
-				{
-					"name": "Edit player",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "health",
-									"value": "80",
-									"description": "greater than or equal 0",
-									"type": "text"
-								},
-								{
-									"key": "weapon",
-									"value": "1",
-									"description": "object included on player's bag",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/players/:id",
+							"raw": "{{baseUrl}}/api/players/:id/arm",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"players",
-								":id"
+								":id",
+								"arm"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Kill player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players/:id/kill",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players",
+								":id",
+								"kill"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pick up object",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"objectId\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players/:id/pick-up",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players",
+								":id",
+								"pick-up"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attack player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"target\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players/:id/attack",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players",
+								":id",
+								"attack"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Steal player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"target\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players/:id/steal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players",
+								":id",
+								"steal"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resurrect player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players/:id/resurrect",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players",
+								":id",
+								"resurrect"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Use bag object",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"objectId\": 1,\n\t\"target\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/players/:id/use-object",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"players",
+								":id",
+								"use-object"
 							],
 							"variable": [
 								{
@@ -139,7 +330,7 @@
 								}
 							]
 						},
-						"description": "- Change health of a player\n- Change weapon of a player"
+						"description": "if target is not provided, object will be used to himself"
 					},
 					"response": []
 				}
@@ -164,6 +355,34 @@
 								"objects"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create object",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"axe\",\n    \"value\": -33\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/objects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"objects"
+							]
+						},
+						"description": "Create a new object"
 					},
 					"response": []
 				},
@@ -207,63 +426,29 @@
 					"response": []
 				},
 				{
-					"name": "Create object",
+					"name": "Upgrade object",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "axe",
-									"type": "text"
-								},
-								{
-									"key": "value",
-									"value": "-33",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n\t\"value\": -7\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/objects",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"objects"
-							]
-						},
-						"description": "Create a new object"
-					},
-					"response": []
-				},
-				{
-					"name": "Edit object",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "value",
-									"value": "-7",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/objects/:id",
+							"raw": "{{baseUrl}}/api/objects/:id/upgrade",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"objects",
-								":id"
+								":id",
+								"upgrade"
 							],
 							"variable": [
 								{
@@ -271,8 +456,7 @@
 									"value": "1"
 								}
 							]
-						},
-						"description": "- Change value of a object"
+						}
 					},
 					"response": []
 				},
@@ -298,11 +482,44 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "3"
 								}
 							]
 						},
 						"description": "- Change value of a object"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"secret\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/signin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
 					},
 					"response": []
 				}
@@ -334,7 +551,7 @@
 	],
 	"variable": [
 		{
-			"id": "58ef11ef-da48-4e5d-ab29-2900175562c3",
+			"id": "9cc3d391-d88f-4409-a8cc-108b4ab50fd4",
 			"key": "baseUrl",
 			"value": "http://0.0.0.0:8080",
 			"type": "string"

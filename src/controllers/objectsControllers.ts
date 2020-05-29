@@ -55,46 +55,49 @@ class ObjectControllers {
     const { id } = req.params;
     const { value } = req.body;
 
+    // Get and validate object
     const { ok, obj, error } = await this.objectRepo.getObjetById(
       parseInt(id, 10)
     );
-
     if (!ok) return next(error);
-
     if (!obj)
       return res.status(404).json({
         errors: [ObjectError.objectNotFoundError("id", id)],
       });
 
+    // Update object
     obj.value = parseInt(value, 10);
-
     const {
       ok: updateOk,
       error: updateError,
     } = await this.objectRepo.updateObject(obj);
     if (!updateOk) return next(updateError);
+
+    // Ok response
     res.location(`/objects/${id}`).sendStatus(200);
   }
 
   async deleteObjectContoller(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
 
+    // Get and validate object
     const { ok, obj, error } = await this.objectRepo.getObjetById(
       parseInt(id, 10)
     );
-
     if (!ok) return next(error);
-
     if (!obj)
       return res.status(404).json({
         errors: [ObjectError.objectNotFoundError("id", id)],
       });
 
+    // Delete object
     const {
       ok: removeOk,
       error: removeError,
     } = await this.objectRepo.removeObject(obj.id);
     if (!removeOk) return next(removeError);
+
+    // Ok response
     res.sendStatus(204);
   }
 }
