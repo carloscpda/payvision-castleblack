@@ -4,6 +4,7 @@ import { players, objects } from "./data";
 
 const PATH = "./cache/data.json";
 
+// Read all databse
 async function fetchAll(): Promise<{ ok: boolean; data: any; error: string }> {
   const readFile = util.promisify(fs.readFile);
 
@@ -16,6 +17,7 @@ async function fetchAll(): Promise<{ ok: boolean; data: any; error: string }> {
   }
 }
 
+// Read an attribute
 async function fetch(
   key: string
 ): Promise<{ ok: boolean; data: any; error: string }> {
@@ -24,6 +26,7 @@ async function fetch(
   else return { ok, data, error };
 }
 
+// Update an attribute
 async function update(
   key: string,
   updatedData: any
@@ -43,6 +46,7 @@ async function update(
   }
 }
 
+// Seed database with default data
 async function seed(): Promise<{ ok: boolean; error: string }> {
   const writeFile = util.promisify(fs.writeFile);
 

@@ -1,8 +1,17 @@
 import db from "../db";
 import { IPlayer } from "../@types/player";
 
-class PlayerService {
-  static getAllPlayers = async (): Promise<{
+export interface IPlayerRepo {
+  getAllPlayers: () => Promise<{ ok: boolean; data: IPlayer[]; error: string }>;
+  getPlayerById: (
+    id: number
+  ) => Promise<{ ok: boolean; player: IPlayer | undefined; error: string }>;
+  updatePlayer: (player: IPlayer) => Promise<{ ok: boolean; error: string }>;
+  addPlayer: (player: IPlayer) => Promise<{ ok: boolean; error: string }>;
+}
+
+class PlayerRepo implements IPlayerRepo {
+  getAllPlayers = async (): Promise<{
     ok: boolean;
     data: IPlayer[];
     error: string;
@@ -10,7 +19,7 @@ class PlayerService {
     return await db.fetch("players");
   };
 
-  static getPlayerById = async (
+  getPlayerById = async (
     id: number
   ): Promise<{
     ok: boolean;
@@ -25,7 +34,7 @@ class PlayerService {
     };
   };
 
-  static updatePlayer = async (
+  updatePlayer = async (
     player: IPlayer
   ): Promise<{ ok: boolean; error: string }> => {
     const { ok, data, error } = await db.fetch("players");
@@ -35,7 +44,7 @@ class PlayerService {
     return db.update("players", data);
   };
 
-  static addPlayer = async (
+  addPlayer = async (
     player: IPlayer
   ): Promise<{ ok: boolean; error: string }> => {
     const { ok, data, error } = await db.fetch("players");
@@ -45,4 +54,4 @@ class PlayerService {
   };
 }
 
-export default PlayerService;
+export default PlayerRepo;

@@ -1,8 +1,18 @@
 import db from "../db";
 import { IObject } from "../@types/object";
 
-class ObjectService {
-  static getAllObjects = async (): Promise<{
+export interface IObjectRepo {
+  getAllObjects: () => Promise<{ ok: boolean; data: IObject[]; error: string }>;
+  getObjetById: (
+    id: number
+  ) => Promise<{ ok: boolean; obj: IObject | undefined; error: string }>;
+  updateObject: (obj: IObject) => Promise<{ ok: boolean; error: string }>;
+  addObject: (obj: IObject) => Promise<{ ok: boolean; error: string }>;
+  removeObject: (objectId: number) => Promise<{ ok: boolean; error: string }>;
+}
+
+class ObjectRepo implements IObjectRepo {
+  getAllObjects = async (): Promise<{
     ok: boolean;
     data: IObject[];
     error: string;
@@ -10,7 +20,7 @@ class ObjectService {
     return await db.fetch("objects");
   };
 
-  static getObjetById = async (
+  getObjetById = async (
     id: number
   ): Promise<{
     ok: boolean;
@@ -25,7 +35,7 @@ class ObjectService {
     };
   };
 
-  static updateObject = async (
+  updateObject = async (
     obj: IObject
   ): Promise<{ ok: boolean; error: string }> => {
     const { ok, data, error } = await db.fetch("objects");
@@ -35,16 +45,14 @@ class ObjectService {
     return db.update("objects", data);
   };
 
-  static addObject = async (
-    obj: IObject
-  ): Promise<{ ok: boolean; error: string }> => {
+  addObject = async (obj: IObject): Promise<{ ok: boolean; error: string }> => {
     const { ok, data, error } = await db.fetch("objects");
     if (!ok) return { ok, error };
     data.push(obj);
     return db.update("objects", data);
   };
 
-  static removeObject = async (
+  removeObject = async (
     objectId: number
   ): Promise<{ ok: boolean; error: string }> => {
     const { ok, data, error } = await db.fetch("objects");
@@ -55,4 +63,4 @@ class ObjectService {
   };
 }
 
-export default ObjectService;
+export default ObjectRepo;
