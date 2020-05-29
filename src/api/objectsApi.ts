@@ -27,7 +27,7 @@ objectsApi.get(
   controllers.getObjectContoller.bind(controllers)
 );
 
-// Upgrade am object with a new value
+// Upgrade an object with a new value
 objectsApi.post(
   "/:id/upgrade",
   ObjectValidator.objectUpgradeValidation(),

@@ -20,6 +20,26 @@ class PlayerValidator {
   static playerArmValidation = () => {
     return [param("id").isInt(), body("weapon").isInt()];
   };
+
+  static playerPickUpValidation = () => {
+    return [param("id").isInt(), body("objectId").isInt()];
+  };
+
+  static playerAttackValidation = () => {
+    return [param("id").isInt(), body("target").isInt()];
+  };
+
+  static playerStealValidation = () => {
+    return [param("id").isInt(), body("target").isInt()];
+  };
+
+  static playerUseObjectValidation = () => {
+    return [
+      param("id").isInt(),
+      body("target").isInt().optional(),
+      body("objectId").isInt(),
+    ];
+  };
 }
 
 export default PlayerValidator;

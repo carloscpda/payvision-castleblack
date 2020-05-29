@@ -1,8 +1,13 @@
 import request from "supertest";
 import server from "../server";
 import { objects } from "../data";
+import db from "../db";
 
 describe("Castleblack API objects", () => {
+  beforeEach(() => {
+    db.seed();
+  });
+
   it("should retrieve all objects", (done) => {
     request(server)
       .get("/api/objects")
